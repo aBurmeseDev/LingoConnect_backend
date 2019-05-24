@@ -1,3 +1,3 @@
 DEBUG = True
-PORT = 8000
+PORT = 5000
 SECRET_KEY = 'JJ'
