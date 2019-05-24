@@ -47,7 +47,7 @@ def after_request(response):
 
 @app.route('/')
 def index():
-    return 'hi'
+    return 'HIT'
 
 
 if __name__ == '__main__':
