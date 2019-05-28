@@ -12,6 +12,8 @@ import models
 user_fields = {
     'id': fields.Integer,
     'username': fields.String,
+    'logged': fields.Boolean
+
 }
 
 
@@ -56,11 +58,8 @@ class UserList(Resource):
         if args['password'] == args['verify_password']:
             print(args, ' this is args')
             user = models.User.create_user(**args)
-
-            # Pass the user to login_user
-            # set up our session for us!
+            
             login_user(user)
-
             return marshal(user, user_fields), 201
         return make_response(
             json.dumps({
