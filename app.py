@@ -28,7 +28,7 @@ def load_user(userid):
 # app.use(dogControllr, '/api/v1')
 # url prefix star
 
-CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3002"], supports_credentials=True)
 
 app.register_blueprint(users_api, url_prefix='/users')
 
