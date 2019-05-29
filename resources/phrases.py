@@ -49,31 +49,20 @@ class PhraseList(Resource):
     
     
     def get(self):
-        # models.Phrase.select() ## Look up peewee queries
-        # all_phrases = models.Phrase.select()
-        # print(all_phrases, "<--- all phrases result of db.query")
-        # new_phrases = []
-
-        # for phrase in all_phrases:
-        #     new_phrases.append(marshal(phrase, phrase_fields))
-
+  
         new_phrases = [marshal(phrase, phrase_fields) for phrase in models.Phrase.select()]
-        # [{}, Model Instances]
-        # for Generating response object
-        # marshal in flask
+        
         return new_phrases
 
     @marshal_with(phrase_fields)
     def post(self):
-        # read the args "req.body"
-        args = self.reqparse.parse_args() # body-parser
+      
+        args = self.reqparse.parse_args() 
         print(args, '<----- args (req.body)')
         phrase = models.Phrase.create(**args)
-        user = g.user._get_current_object()
 
         print(phrase, "<---" , type(phrase))
-        # line 52 does line 54
-        # phrase = models.Phrase.create(name=args['name'], breed=args['breed'], owner=args['owner'])
+        
         return (phrase, 201)
 
 class Phrase(Resource):
@@ -141,9 +130,9 @@ api = Api(phrases_api)
 
 api.add_resource(
     PhraseList,
-    '/phrases'
+    '/create'
 )
 api.add_resource(
     Phrase,
-    '/phrases/<int:id>'
+    '/<int:id>'
 )
