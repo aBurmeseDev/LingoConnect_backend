@@ -8,7 +8,7 @@ from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
 
-DATABASE = PostgresqlDatabase('phrases', user='josh', password='karp')
+DATABASE = PostgresqlDatabase('phrases', user='johnuser', password='momo')
 
 
 class User(UserMixin, Model):
