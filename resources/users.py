@@ -13,7 +13,6 @@ import models
 user_fields = {
     'id': fields.Integer,
     'username': fields.String,
-    'logged': fields.Boolean
 
 }
 
@@ -99,26 +98,35 @@ class User(Resource):
     
     
     def post(self):
-       try:
-           args = self.reqparse.parse_args()
-           user = models.User.get(models.User.username==args["username"])
-           if(user):
-               if(check_password_hash(user.password, args["password"])):
-                   return make_response(
-                       json.dumps({
-                           'user': marshal(user, user_fields),
-                           'message': 'success'
-                       }), 200)
-               else:
-                   return make_response(
-                       json.dumps({
-                           'message':"incorrect password"
-                       }), 200)
-       except models.User.DoesNotExist:
-           return make_response(
-                   json.dumps({
-                       'message':"Username does not exist"
-                   }), 200)
+        try:
+            args = self.reqparse.parse_args()
+            user = models.User.get(models.User.username==args["username"])
+            if(user):
+                if(check_password_hash(user.password, args["password"])):
+                    return make_response(
+                        json.dumps({
+                            'user': marshal(user, user_fields),
+                            'message': 'success',
+                            'logged': True
+                        }), 200)
+                else:
+                    return make_response(
+                        json.dumps({
+                            'message':"incorrect password"
+                        }), 200)
+        except models.User.DoesNotExist:
+            return make_response(
+                    json.dumps({
+                        'message':"Username does not exist"
+                    }), 200)
+
+    @marshal_with(user_fields)
+    def put(self, id):
+        args = self.reqparse.parse_args()
+        query = models.User.update(**args).where(models.User.id==id)
+        query.execute()
+        print(query, "<--- this is query")
+        return (models.User.get(models.User.id==id), 204)
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
@@ -129,4 +137,5 @@ api.add_resource(
 api.add_resource(
     User,
     '/login'
+
 )
