@@ -1,7 +1,7 @@
 import json
 
 from flask import jsonify, Blueprint, abort, make_response
-from flask_bcrypt import check_password_hash
+from flask_bcrypt import check_password_hash, generate_password_hash
 
 from flask_restful import (Resource, Api, reqparse,
                                inputs, fields, marshal,
@@ -129,7 +129,9 @@ class User(Resource):
             query.execute()
             print(query, "<--- this is query")
             user = models.User.get(models.User.id==id)
+            user.password = generate_password_hash(args["password"])
             print(user, "<-----user")
+            user.save()
         except models.User.DoesNotExist:
             abort(404)
         else:

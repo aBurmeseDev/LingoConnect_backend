@@ -89,7 +89,7 @@ class Phrase(Resource):
             location=['form', 'json']
             )
         super().__init__()
-        
+
     @marshal_with(phrase_fields)
     def get(self, id):
         try:
@@ -116,12 +116,10 @@ class Phrase(Resource):
         return {"message": "resource deleted"}
 
 
-# were setting a module of view functions that can be attached to our flask app
-phrases_api = Blueprint('resources.phrases', __name__)
-#module.exports = controller
 
-#instatiating our api from the blueprint
-# gives us the special methods we can operate our api with
+phrases_api = Blueprint('resources.phrases', __name__)
+
+
 api = Api(phrases_api)
 
 api.add_resource(
