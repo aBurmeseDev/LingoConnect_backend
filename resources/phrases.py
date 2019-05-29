@@ -70,31 +70,28 @@ class Phrase(Resource):
         self.reqparse = reqparse.RequestParser()
 
         self.reqparse.add_argument(
-            'name',
+            'userId',
             required=False,
-            help='No phrase name provided',
+            help='No userId name provided',
             location=['form', 'json']
             )
 
         self.reqparse.add_argument(
-            'breed',
+            'phrase',
             required=False,
             help='No phrase name provided',
             location=['form', 'json']
             )
-
         self.reqparse.add_argument(
-            'owner',
+            'text',
             required=False,
-            help='No phrase name provided',
+            help='No text name provided',
             location=['form', 'json']
             )
-
         super().__init__()
-
+        
     @marshal_with(phrase_fields)
     def get(self, id):
-
         try:
             phrase = models.Phrase.get(models.Phrase.id==id)
         except models.Phrase.DoesNotExist:
