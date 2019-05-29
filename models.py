@@ -8,11 +8,11 @@ from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
 
-DATABASE = PostgresqlDatabase('phrases', user='johnuser', password='momo')
+DATABASE = PostgresqlDatabase('phrases', user='josh', password='karp')
 
 
 class User(UserMixin, Model):
-    username = CharField(unique=True)
+    username = CharField()
     email = CharField(unique=True)
     password = CharField()
     primaryLanguage = CharField()
@@ -39,7 +39,6 @@ class User(UserMixin, Model):
 class Phrase(Model):
     userId = CharField()
     phrase = CharField()
-    created_by = ForeignKeyField(User, related_name='phrase_set')
     created_by_user_id = ForeignKeyField(User, related_name='phrase_set')
     created_at = DateTimeField(default=datetime.datetime.now)
     # instructions on what database to connect too, in our current case splite
