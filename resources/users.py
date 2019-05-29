@@ -13,6 +13,8 @@ import models
 user_fields = {
     'id': fields.Integer,
     'username': fields.String,
+    'email': fields.String,
+    'password': fields.String
 
 }
 
@@ -87,12 +89,6 @@ class User(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'primaryLanguage',
-            required=False,
-            help='No primary language provided',
-            location=['form', 'json']
-        )
-        self.reqparse.add_argument(
             'password',
             required=True,
             help='No password provided',
@@ -127,11 +123,26 @@ class User(Resource):
 
     @marshal_with(user_fields)
     def put(self, id):
-        args = self.reqparse.parse_args()
-        query = models.User.update(**args).where(models.User.id==id)
-        query.execute()
-        print(query, "<--- this is query")
-        return (models.User.get(models.User.id==id), 204)
+        try:
+            args = self.reqparse.parse_args()
+            query = models.User.update(**args).where(models.User.id==id)
+            query.execute()
+            print(query, "<--- this is query")
+            user = models.User.get(models.User.id==id)
+            print(user, "<-----user")
+        except models.User.DoesNotExist:
+            abort(404)
+        else:
+            return (user, 200)
+    
+    @marshal_with(user_fields)
+    def get(self, id):
+        try:
+            user = models.User.get(models.User.id==id)
+        except models.User.DoesNotExist:
+            abort(404)
+        else:
+            return (user, 200)
 
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
@@ -141,6 +152,6 @@ api.add_resource(
 )
 api.add_resource(
     User,
-    '/login'
-
+    '/login',
+    '/<int:id>'
 )

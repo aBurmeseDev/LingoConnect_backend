@@ -129,7 +129,8 @@ api = Api(phrases_api)
 
 api.add_resource(
     PhraseList,
-    '/create'
+    '/create',
+    
 )
 api.add_resource(
     Phrase,
