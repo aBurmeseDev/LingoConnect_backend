@@ -60,7 +60,12 @@ class UserList(Resource):
             user = models.User.create_user(**args)
             
             login_user(user)
-            return marshal(user, user_fields), 201
+            return make_response(
+                json.dumps({
+                    'user': marshal(user, user_fields),
+                    'message': 'success',
+                    'logged': True
+                }), 200)
         return make_response(
             json.dumps({
                 'error': 'Password and password verification do not match'
