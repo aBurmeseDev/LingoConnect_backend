@@ -15,7 +15,8 @@ import models
 phrase_fields = {
     'id': fields.Integer,
     'userId': fields.String,
-    'phrase': fields.String
+    'phrase': fields.String,
+    'text': fields.String
 }
 
 # view functions
@@ -25,26 +26,24 @@ class PhraseList(Resource):
         self.reqparse = reqparse.RequestParser()
 
         self.reqparse.add_argument(
-            'name',
+            'userId',
             required=False,
-            help='No phrase name provided',
+            help='No userId name provided',
             location=['form', 'json']
             )
 
         self.reqparse.add_argument(
-            'breed',
+            'phrase',
             required=False,
             help='No phrase name provided',
             location=['form', 'json']
             )
-
         self.reqparse.add_argument(
-            'owner',
+            'text',
             required=False,
-            help='No phrase name provided',
+            help='No text name provided',
             location=['form', 'json']
             )
-
         super().__init__()
     
     
