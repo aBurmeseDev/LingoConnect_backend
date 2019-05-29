@@ -38,9 +38,8 @@ class User(UserMixin, Model):
 
 class Phrase(Model):
     userId = CharField()
+    text = CharField()
     phrase = CharField()
-    created_by_user_id = ForeignKeyField(User, related_name='phrase_set')
-    created_at = DateTimeField(default=datetime.datetime.now)
     # instructions on what database to connect too, in our current case splite
 
     class Meta:
