@@ -149,6 +149,11 @@ class User(Resource):
         else:
             return (user, 200)
 
+    def delete(self, id):
+        query = models.User.delete().where(models.User.id == id)
+        query.execute()
+        return {"message": "resource deleted"}
+
 class LogoutUser(Resource):
     def post(self):
         logout_user()
