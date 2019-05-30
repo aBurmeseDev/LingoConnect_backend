@@ -16,7 +16,9 @@ phrase_fields = {
     'id': fields.Integer,
     'userId': fields.String,
     'phrase': fields.String,
-    'text': fields.String
+    'text': fields.String,
+    'setLanguage': fields.String,
+    'transLanguage': fields.String
 }
 
 # view functions
@@ -40,6 +42,18 @@ class PhraseList(Resource):
             )
         self.reqparse.add_argument(
             'text',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'setLanguage',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'transLanguage',
             required=False,
             help='No text name provided',
             location=['form', 'json']
@@ -84,6 +98,18 @@ class Phrase(Resource):
             )
         self.reqparse.add_argument(
             'text',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'setLanguage',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'transLanguage',
             required=False,
             help='No text name provided',
             location=['form', 'json']

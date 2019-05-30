@@ -40,6 +40,8 @@ class Phrase(Model):
     userId = CharField()
     text = CharField()
     phrase = CharField()
+    setLanguage = CharField()
+    transLanguage = CharField()
     # instructions on what database to connect too, in our current case splite
 
     class Meta:
