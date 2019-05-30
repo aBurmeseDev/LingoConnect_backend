@@ -53,6 +53,11 @@ class UserList(Resource):
             location=['form', 'json']
         )
         super().__init__()
+    
+    def get(self):
+        users = [marshal(user, user_fields) for user in models.User.select()]
+        
+        return users
 
     def post(self):
         #registrations
@@ -150,8 +155,10 @@ class User(Resource):
             return (user, 200)
 
     def delete(self, id):
-        query = models.User.delete().where(models.User.id == id)
-        query.execute()
+        queryUser = models.User.delete().where(models.User.id == id)
+        queryPhrase = models.Phrase.delete().where(models.Phrase.userId == id)
+        queryUser.execute()
+        queryPhrase.execute()
         return {"message": "resource deleted"}
 
 class LogoutUser(Resource):
