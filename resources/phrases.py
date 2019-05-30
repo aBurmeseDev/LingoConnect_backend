@@ -16,7 +16,10 @@ phrase_fields = {
     'id': fields.Integer,
     'userId': fields.String,
     'phrase': fields.String,
-    'text': fields.String
+    'text': fields.String,
+    'setLanguage': fields.String,
+    'transLanguage': fields.String
+
 }
 
 # view functions
@@ -42,6 +45,19 @@ class PhraseList(Resource):
             'text',
             required=False,
             help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'setLanguage',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'transLanguage',
+            required=False,
+            help='No text name provided',
+
             location=['form', 'json']
             )
         super().__init__()
@@ -70,31 +86,40 @@ class Phrase(Resource):
         self.reqparse = reqparse.RequestParser()
 
         self.reqparse.add_argument(
-            'name',
+            'userId',
             required=False,
-            help='No phrase name provided',
+            help='No userId name provided',
             location=['form', 'json']
             )
 
         self.reqparse.add_argument(
-            'breed',
+            'phrase',
             required=False,
             help='No phrase name provided',
             location=['form', 'json']
             )
-
         self.reqparse.add_argument(
-            'owner',
+            'text',
             required=False,
-            help='No phrase name provided',
+            help='No text name provided',
             location=['form', 'json']
             )
-
+        self.reqparse.add_argument(
+            'setLanguage',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
+        self.reqparse.add_argument(
+            'transLanguage',
+            required=False,
+            help='No text name provided',
+            location=['form', 'json']
+            )
         super().__init__()
 
     @marshal_with(phrase_fields)
     def get(self, id):
-
         try:
             phrase = models.Phrase.get(models.Phrase.id==id)
         except models.Phrase.DoesNotExist:
@@ -119,17 +144,16 @@ class Phrase(Resource):
         return {"message": "resource deleted"}
 
 
-# were setting a module of view functions that can be attached to our flask app
-phrases_api = Blueprint('resources.phrases', __name__)
-#module.exports = controller
 
-#instatiating our api from the blueprint
-# gives us the special methods we can operate our api with
+phrases_api = Blueprint('resources.phrases', __name__)
+
+
 api = Api(phrases_api)
 
 api.add_resource(
     PhraseList,
-    '/create'
+    '/create',
+    
 )
 api.add_resource(
     Phrase,

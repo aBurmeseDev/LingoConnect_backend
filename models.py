@@ -8,7 +8,7 @@ from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
 
-DATABASE = PostgresqlDatabase('phrases', user='johnuser', password='momo')
+DATABASE = PostgresqlDatabase('phrases', user='josh', password='karp')
 
 
 class User(UserMixin, Model):
@@ -40,6 +40,9 @@ class Phrase(Model):
     userId = CharField()
     text = CharField()
     phrase = CharField()
+    setLanguage = CharField()
+    transLanguage = CharField()
+
     # instructions on what database to connect too, in our current case splite
 
     class Meta:
