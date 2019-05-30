@@ -19,6 +19,7 @@ phrase_fields = {
     'text': fields.String,
     'setLanguage': fields.String,
     'transLanguage': fields.String
+
 }
 
 # view functions
@@ -56,6 +57,7 @@ class PhraseList(Resource):
             'transLanguage',
             required=False,
             help='No text name provided',
+
             location=['form', 'json']
             )
         super().__init__()

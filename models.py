@@ -42,6 +42,7 @@ class Phrase(Model):
     phrase = CharField()
     setLanguage = CharField()
     transLanguage = CharField()
+
     # instructions on what database to connect too, in our current case splite
 
     class Meta:
