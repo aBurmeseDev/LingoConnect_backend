@@ -1,6 +1,6 @@
 import json
 
-from flask import jsonify, Blueprint, abort, make_response
+from flask import jsonify, Blueprint, abort, make_response, session
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from flask_restful import (Resource, Api, reqparse,
@@ -71,7 +71,7 @@ class UserList(Resource):
         return make_response(
             json.dumps({
                 'error': 'Password and password verification do not match'
-            }), 400)# just another way to send something back to the client
+            }), 400)
 
 class User(Resource):
     def __init__(self):
@@ -104,6 +104,9 @@ class User(Resource):
             user = models.User.get(models.User.username==args["username"])
             if(user):
                 if(check_password_hash(user.password, args["password"])):
+                    login_user(user)
+                    print(session, "session")
+                    print(session.__dict__)
                     return make_response(
                         json.dumps({
                             'user': marshal(user, user_fields),
@@ -114,12 +117,12 @@ class User(Resource):
                     return make_response(
                         json.dumps({
                             'message':"incorrect password"
-                        }), 200)
+                        }), 404)
         except models.User.DoesNotExist:
             return make_response(
-                    json.dumps({
-                        'message':"Username does not exist"
-                    }), 200)
+                json.dumps({
+                    'message':"Username does not exist"
+                }), 404)
 
     @marshal_with(user_fields)
     def put(self, id):
@@ -146,8 +149,19 @@ class User(Resource):
         else:
             return (user, 200)
 
+class LogoutUser(Resource):
+    def post(self):
+        logout_user()
+        print(session.__dict__)
+        return make_response(
+            json.dumps({
+                'message': 'Logged out',
+                'logged': False
+            }), 200)
+
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
+
 api.add_resource(
     UserList,
     '/registration'
@@ -156,4 +170,9 @@ api.add_resource(
     User,
     '/login',
     '/<int:id>'
+)
+
+api.add_resource(
+    LogoutUser,
+    '/logout'
 )
