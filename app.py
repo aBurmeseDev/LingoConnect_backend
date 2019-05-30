@@ -7,9 +7,6 @@ from flask_login import LoginManager, current_user
 from resources.users import users_api
 from resources.phrases import phrases_api
 
-DEBUG = True
-HOST = '0.0.0.0'
-PORT = 8000
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
