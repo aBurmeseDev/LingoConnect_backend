@@ -1,8 +1,4 @@
 import datetime
-
-# peewee is arm
-# this will give our model the power to talk to postgres sql
-# peewee is kinda mongoose
 from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
@@ -43,15 +39,14 @@ class Phrase(Model):
     setLanguage = CharField()
     transLanguage = CharField()
 
-    # instructions on what database to connect too, in our current case splite
+
 
     class Meta:
-        # instructions on what database to connect to
+        
         database = DATABASE
 
 
 def initialize():
-    DATABASE.connect()  # opening a connection to the db
-    # the array takes our models and will create tables that match y
+    DATABASE.connect() 
     DATABASE.create_tables([User, Phrase], safe=True)
     DATABASE.close()
