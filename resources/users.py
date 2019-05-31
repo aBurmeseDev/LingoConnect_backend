@@ -136,7 +136,6 @@ class User(Resource):
                 args = self.reqparse.parse_args()
             else:
                 args['password'] = generate_password_hash(args["password"])
-                print(user, "<-----user")
             query = models.User.update(**args).where(models.User.id==id)
             query.execute()
             print(query, "<--- this is query")
