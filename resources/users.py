@@ -13,9 +13,7 @@ import models
 user_fields = {
     'id': fields.Integer,
     'username': fields.String,
-    'email': fields.String,
-    'password': fields.String
-
+    'email': fields.String
 }
 
 
@@ -83,7 +81,7 @@ class User(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
             'username',
-            required=True,
+            required=False,
             help='No username provided',
             location=['form', 'json']
         )
@@ -95,7 +93,7 @@ class User(Resource):
         )
         self.reqparse.add_argument(
             'password',
-            required=True,
+            required=False,
             help='No password provided',
             location=['form', 'json']
         )
@@ -133,13 +131,17 @@ class User(Resource):
     def put(self, id):
         try:
             args = self.reqparse.parse_args()
+            user = models.User.get(models.User.id==id)
+            if (args['password']==''):
+                self.reqparse.remove_argument('password')
+                args = self.reqparse.parse_args()
+            else:
+                args['password'] = generate_password_hash(args["password"])
+                print(user, "<-----user")
             query = models.User.update(**args).where(models.User.id==id)
             query.execute()
             print(query, "<--- this is query")
-            user = models.User.get(models.User.id==id)
-            user.password = generate_password_hash(args["password"])
-            print(user, "<-----user")
-            user.save()
+            print(user)
         except models.User.DoesNotExist:
             abort(404)
         else:
