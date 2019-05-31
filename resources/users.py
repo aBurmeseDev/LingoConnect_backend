@@ -131,7 +131,6 @@ class User(Resource):
     def put(self, id):
         try:
             args = self.reqparse.parse_args()
-            user = models.User.get(models.User.id==id)
             if (args['password']==''):
                 self.reqparse.remove_argument('password')
                 args = self.reqparse.parse_args()
@@ -141,11 +140,10 @@ class User(Resource):
             query = models.User.update(**args).where(models.User.id==id)
             query.execute()
             print(query, "<--- this is query")
-            print(user)
         except models.User.DoesNotExist:
             abort(404)
         else:
-            return (user, 200)
+            return (models.User.get(models.User.id==id), 200)
     
     @marshal_with(user_fields)
     def get(self, id):
