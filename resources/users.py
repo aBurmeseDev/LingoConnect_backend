@@ -61,7 +61,7 @@ class UserList(Resource):
         #registrations
         args = self.reqparse.parse_args()
         if args['password'] == args['verify_password']:
-            print(args, ' this is args')
+            
             user = models.User.create_user(**args)
             
             login_user(user)
@@ -108,8 +108,6 @@ class User(Resource):
             if(user):
                 if(check_password_hash(user.password, args["password"])):
                     login_user(user)
-                    print(session, "session")
-                    print(session.__dict__)
                     return make_response(
                         json.dumps({
                             'user': marshal(user, user_fields),
@@ -119,7 +117,7 @@ class User(Resource):
                 else:
                     return make_response(
                         json.dumps({
-                            'message':"incorrect password"
+                            'message':"Incorrect password"
                         }), 404)
         except models.User.DoesNotExist:
             return make_response(
@@ -138,7 +136,6 @@ class User(Resource):
                 args['password'] = generate_password_hash(args["password"])
             query = models.User.update(**args).where(models.User.id==id)
             query.execute()
-            print(query, "<--- this is query")
         except models.User.DoesNotExist:
             abort(404)
         else:
@@ -163,7 +160,6 @@ class User(Resource):
 class LogoutUser(Resource):
     def post(self):
         logout_user()
-        print(session.__dict__)
         return make_response(
             json.dumps({
                 'message': 'Logged out',

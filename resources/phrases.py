@@ -7,11 +7,6 @@ from flask_restful import (Resource, Api, reqparse, fields, marshal,
 
 import models
 
-## define what fields we want on our responses
-
-## Marshal Fields
-# phrase_fields have to do with what we want the response object
-# to the client to look like
 phrase_fields = {
     'id': fields.Integer,
     'userId': fields.String,
@@ -22,10 +17,9 @@ phrase_fields = {
 
 }
 
-# view functions
+
 class PhraseList(Resource):
     def __init__(self):
-        # reqparse, its like body-parser in express, (it makes the request object's body readable)
         self.reqparse = reqparse.RequestParser()
 
         self.reqparse.add_argument(
@@ -71,20 +65,13 @@ class PhraseList(Resource):
 
     @marshal_with(phrase_fields)
     def post(self):
-      
         args = self.reqparse.parse_args() 
-        print(args, '<----- args (req.body)')
         phrase = models.Phrase.create(**args)
-
-        print(phrase, "<---" , type(phrase))
-        
         return (phrase, 201)
 
 class Phrase(Resource):
     def __init__(self):
-        # reqparse, its like body-parser in express, (it makes the request object's body readable)
         self.reqparse = reqparse.RequestParser()
-
         self.reqparse.add_argument(
             'userId',
             required=False,
@@ -129,13 +116,9 @@ class Phrase(Resource):
 
     @marshal_with(phrase_fields)
     def put(self, id):
-        # parse the args (get req.body)
         args = self.reqparse.parse_args()
         query = models.Phrase.update(**args).where(models.Phrase.id==id)
-        # we have execute the query
         query.execute()
-        print(query, "<--- this is query")
-        # the query doesn't respond with the update object
         return (models.Phrase.get(models.Phrase.id==id), 204)
 
     def delete(self, id):
