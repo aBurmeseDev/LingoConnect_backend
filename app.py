@@ -1,4 +1,4 @@
-
+import os
 from flask import Flask, g
 import models
 from flask_cors import CORS
@@ -26,8 +26,8 @@ def load_user(userid):
 
 
 
-CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(phrases_api, origins=["http://localhost:3000"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3000", "https://lingoconnect.herokuapp.com/"], supports_credentials=True)
+CORS(phrases_api, origins=["http://localhost:3000", "https://lingoconnect.herokuapp.com/"], supports_credentials=True)
 app.register_blueprint(users_api, url_prefix='/users')
 app.register_blueprint(phrases_api, url_prefix='/phrases')
 
@@ -50,6 +50,9 @@ def after_request(response):
 def index():
     return 'HIT'
 
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
 if __name__ == '__main__':
     models.initialize()
