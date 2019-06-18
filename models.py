@@ -5,8 +5,8 @@ from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 from playhouse.db_url import connect
 
-# DATABASE = PostgresqlDatabase('phrases', user='josh', password='karp')
-DATABASE = connect(os.environ.get('DATABASE_URL'))
+DATABASE = PostgresqlDatabase('phrases', user='josh', password='karp') # comment this out when you deploy, but uncomment it when youre working locally
+#DATABASE = connect(os.environ.get('DATABASE_URL')) # comment this out when you youre working locallay, but uncomment it when youre going to deploy
 
 
 class User(UserMixin, Model):
